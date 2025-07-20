@@ -13,24 +13,7 @@ const PORT = process.env.PORT || 5000;
 
 connectDB();
 app.use(express.json());
-
-const corsOptions = {
-  origin: [
-    'http://localhost:3000', 
-    'http://localhost:5173',
-    'https://youtube-videos-frontend.vercel.app',
-    'https://*.vercel.app'
-  ],
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-};
-
-app.use(cors(corsOptions));
-
-app.set('trust proxy', true);
-
-app.options('*', cors(corsOptions));
+app.use(cors());
 
 app.use('/api/videos', videoRoutes);
 app.use('/api/notes', noteRoutes);
@@ -40,6 +23,16 @@ app.get("/", (req, res) => {
     res.json({ 
         message: "YouTube Video Management API is running!", 
         status: "OK",
+        timestamp: new Date().toISOString()
+    });
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ 
+        message: "Something went wrong!",
+        error: process.env.NODE_ENV === 'production' ? {} : err.stack
     });
 });
 
@@ -48,5 +41,4 @@ app.listen(PORT, () => {
     console.log("Server is started at port " + PORT);
 });
 
-// Export for Vercel
 export default app;
