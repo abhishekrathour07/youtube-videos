@@ -15,9 +15,9 @@ connectDB();
 app.use(express.json());
 app.use(cors());
 
-app.use('/api/videos', videoRoutes);
-app.use('/api/notes', noteRoutes);
-app.use('/api/event-logs', eventLogRoutes);
+app.use('/videos', videoRoutes);
+app.use('/notes', noteRoutes);
+app.use('/event-logs', eventLogRoutes);
 
 app.get("/", (req, res) => {
     res.json({ 
