@@ -45,3 +45,6 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
     console.log("Server is started at port " + PORT);
 });
+
+// Export for Vercel
+export default app;
